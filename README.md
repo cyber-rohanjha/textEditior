@@ -1,4 +1,4 @@
-# Kilo
+# Swan
 
 A small terminal-based text editor written in C.
 
@@ -7,7 +7,7 @@ A small terminal-based text editor written in C.
 Compile the editor with:
 
 ```sh
-gcc -o kilo kilo.c -std=c99 -Wall -Wextra -pedantic
+gcc -o swan swan.c -std=c99 -Wall -Wextra -pedantic
 ```
 
 ## Run
@@ -15,10 +15,10 @@ gcc -o kilo kilo.c -std=c99 -Wall -Wextra -pedantic
 Open a file with:
 
 ```sh
-./kilo path/to/file.txt
+./swan path/to/file.txt
 ```
 
-If no file is provided, Kilo opens with an empty buffer.
+If no file is provided, Swan opens with an empty buffer.
 
 ## Controls
 
