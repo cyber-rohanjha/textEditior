@@ -38,7 +38,7 @@ char *editorPrompt(char *prompt, void (*callback)(char *, int)) {
             }
         } else if (!iscntrl(c) && c < 128) {
             if (buflen == bufsize - 1) {
-                bufsize *= 1;
+                bufsize *= 2;
                 buf = realloc(buf, bufsize);
             }
             buf[buflen++] = c;
