@@ -2,10 +2,42 @@
 #include "terminal.h"
 
 #include <errno.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
+
+/*** handles terminal resize ***/
+
+static volatile sig_atomic_t swan_resized = 0;
+
+static void handleSigWinch(int sig) {
+    (void)sig;
+    swan_resized = 1;
+}
+
+void installResizeHandler(void) {
+    struct sigaction sa;
+    memset(&sa, 0, sizeof(sa));
+    sa.sa_handler = handleSigWinch;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+    sigaction(SIGWINCH, &sa, NULL);
+}
+
+void editorHandleResize(void) {
+    if (!swan_resized) return;
+    swan_resized = 0;
+
+    int rows, cols;
+    if (getWindowSize(&rows, &cols) != -1) {
+        E.screenrows = rows - 2;
+        if (E.screenrows < 0) E.screenrows = 0;
+        E.screencols = cols;
+    }
+}
 
 /*** terminal ***/
 

@@ -30,6 +30,7 @@ int main(int argc, char *argv[]) {
 
     enableRawMode();
     initEditor();
+    installResizeHandler();
     if (argc >= 2) {
         editorOpen(argv[1]);
     }
@@ -37,6 +38,7 @@ int main(int argc, char *argv[]) {
     editorSetStatusMessage("HELP: Ctrl-S = save | Ctrl-Q = quit | Ctrl-F = find | Ctrl-R = replace");
 
     while (1) {
+        editorHandleResize();
 	    editorRefreshScreen();
         editorProcessKeypress();
     }

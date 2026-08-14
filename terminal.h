@@ -4,6 +4,8 @@
 void die(const char *s);
 void disableRawMode(void);
 void enableRawMode(void);
+void installResizeHandler(void);
+void editorHandleResize(void);
 int editorReadKey(void);
 int getCursorPosition(int *rows, int *clos);
 int getWindowSize(int *rows, int *cols);
