@@ -28,7 +28,7 @@ Linux only, for now. Raw-mode terminal handling relies on POSIX `termios` and `i
 Requires only a C99 compiler and `make`. No libraries to install.
 
 ```bash
-git clone <your-repo-url>
+git clone <https://github.com/cyber-rohanjha/textEditior>
 cd swan
 make
 ./swan somefile.c
@@ -47,7 +47,7 @@ Run with no filename to open a blank buffer:
 By default `./swan` only works while you're inside the project directory, since `./` is a relative path. To use `swan` like any other installed command, from anywhere on your system:
 
 ```bash
-chmod +x swan          # make sure the binary has execute permission (make already sets this, but useful if you've copied the binary elsewhere)
+chmod +x swan          # make sure the binary has execute permission
 sudo cp swan /usr/local/bin/swan
 ```
 
