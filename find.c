@@ -147,7 +147,7 @@ void editorFindAndReplace(void) {
             editorSetStatusMessage("Replace with \"%s\"? y/n/a(ll)/q(quit)", replacement);
             editorRefreshScreen();
             int key = editorReadKey();
-            if (key = 'y') {
+            if (key == 'y') {
                 do_replace = 1;
             } else if (key == 'a') {
                 do_replace = 1;
