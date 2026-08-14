@@ -28,8 +28,8 @@ Linux only, for now. Raw-mode terminal handling relies on POSIX `termios` and `i
 Requires only a C99 compiler and `make`. No libraries to install.
 
 ```bash
-git clone <https://github.com/cyber-rohanjha/textEditior>
-cd swan
+git clone https://github.com/cyber-rohanjha/textEditior
+cd textEditior
 make
 ./swan somefile.c
 ```
