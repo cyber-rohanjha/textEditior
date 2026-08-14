@@ -16,12 +16,86 @@ char *C_HL_keywords[] = {
     "void|", NULL
 };
 
+char *PY_HL_extensions[] = {".py", NULL};
+char *PY_HL_keywords[] = {
+    "False", "None", "True", "and", "as", "assert", "async", "await",
+    "break", "class", "continue", "def", "del", "elif", "else", "except",
+    "finally", "for", "from", "global", "if", "import", "in", "is",
+    "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try",
+    "while", "with", "yield", "self",
+
+    "print|", "len|", "range|", "input|", "open|", "int|", "str|",
+    "float|", "list|", "dict|", "set|", "tuple|", "bool|", "super|",
+    "enumerate|", "zip|", "map|", "filter|", "sorted|", "sum|", "min|",
+    "max|", "abs|", "isinstance|", NULL
+};
+
+char *ASM_X86_HL_extensions[] = {".asm", ".nasm", NULL};
+char *ASM_X86_HL_keywords[] = {
+    "mov", "add", "sub", "mul", "imul", "div", "idiv", "inc", "dec",
+    "neg", "and", "or", "xor", "not", "shl", "shr", "sal", "sar", "rol",
+    "ror", "cmp", "test", "jmp", "je", "jne", "jz", "jnz", "jg", "jge",
+    "jl", "jle", "ja", "jae", "jb", "jbe", "call", "ret", "push", "pop",
+    "lea", "nop", "int", "syscall", "loop", "cwd", "cdq", "cqo", "cbw",
+    "cwde", "movzx", "movsx", "pushf", "popf", "cli", "sti", "hlt", "in",
+    "out", "xchg", "cmpxchg", "rep", "movs", "stos", "lods", "scas",
+    "cmps",
+
+    "section|", "global|", "extern|", "db|", "dw|", "dd|", "dq|",
+    "resb|", "resw|", "resd|", "resq|", "equ|", "times|", "bits|",
+    "org|", "align|", "struc|", "endstruc|",
+
+    "rax;", "rbx;", "rcx;", "rdx;", "rsi;", "rdi;", "rbp;", "rsp;",
+    "r8;", "r9;", "r10;", "r11;", "r12;", "r13;", "r14;", "r15;",
+    "eax;", "ebx;", "ecx;", "edx;", "esi;", "edi;", "ebp;", "esp;",
+    "ax;", "bx;", "cx;", "dx;", "si;", "di;", "bp;", "sp;",
+    "al;", "bl;", "cl;", "dl;", "ah;", "bh;", "ch;", "dh;", NULL
+};
+
+char *ASM_ARM_HL_extensions[] = {".s", ".S", NULL};
+char *ASM_ARM_HL_keywords[] = {
+    "mov", "mvn", "add", "adc", "sub", "sbc", "rsb", "mul", "mla", "and",
+    "orr", "eor", "bic", "cmp", "cmn", "tst", "teq", "b", "bl", "bx",
+    "blx", "ldr", "str", "ldrb", "strb", "ldrh", "strh", "ldm", "stm",
+    "push", "pop", "swi", "svc", "nop", "lsl", "lsr", "asr", "ror",
+    "adr",
+
+    ".text|", ".data|", ".bss|", ".global|", ".align|", ".word|",
+    ".byte|", ".asciz|", ".ascii|", ".equ|", ".section|", ".thumb|",
+    ".arm|", ".end|",
+
+    "r0;", "r1;", "r2;", "r3;", "r4;", "r5;", "r6;", "r7;", "r8;",
+    "r9;", "r10;", "r11;", "r12;", "r13;", "r14;", "r15;",
+    "sp;", "lr;", "pc;", "fp;", "ip;", "cpsr;", "spsr;", NULL
+};
+
 struct editorSyntax HLDB[] = {
     {
         "c",
         C_HL_extensions,
         C_HL_keywords,
         "//", "/*", "*/",
+        HL_HIGHLIGHT_NUMBERS | HL_HIGHLIGHT_STRINGS
+    },
+    {
+        "python",
+        PY_HL_extensions,
+        PY_HL_keywords,
+        "#", "\"\"\"", "\"\"\"",
+        HL_HIGHLIGHT_NUMBERS | HL_HIGHLIGHT_STRINGS
+    },
+    {
+        "asm-x86",
+        ASM_X86_HL_extensions,
+        ASM_X86_HL_keywords,
+        ";", NULL, NULL,
+        HL_HIGHLIGHT_NUMBERS | HL_HIGHLIGHT_STRINGS
+    },
+    {
+        "asm-arm",
+        ASM_ARM_HL_extensions,
+        ASM_ARM_HL_keywords,
+        "@", NULL, NULL,
         HL_HIGHLIGHT_NUMBERS | HL_HIGHLIGHT_STRINGS
     },
 };
@@ -121,10 +195,11 @@ void editorUpdateSyntax(erow *row) {
             for (j = 0; keywords[j]; j++) {
                 int klen = strlen(keywords[j]);
                 int kw2 = keywords[j][klen - 1] == '|';
-                if (kw2) klen--;
+                int kw3 = keywords[j][klen - 1] == ';';
+                if (kw2 || kw3) klen--;
 
                 if (!strncmp(&row->render[i], keywords[j], klen) && is_separator(row->render[i + klen])) {
-                    memset(&row->hl[i], kw2 ? HL_KEYWORD2 : HL_KEYWORD1, klen);
+                    memset(&row->hl[i], kw3 ? HL_KEYWORD3 : (kw2 ? HL_KEYWORD2 : HL_KEYWORD1), klen);
                     i += klen;
                     break;
                 }
@@ -152,6 +227,7 @@ int editorSyntaxToColor(int hl) {
         case HL_MLCOMMENT: return 36;
         case HL_KEYWORD1: return 33;
         case HL_KEYWORD2: return 32;
+        case HL_KEYWORD3: return 94;
         case HL_STRING: return 35;
         case HL_NUMBER: return 31;
         case HL_MATCH: return 34;
