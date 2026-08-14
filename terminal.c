@@ -11,14 +11,33 @@
 
 void die(const char *s) {
 
+    /* leave the alt screen (if we ever enter it) so th error
+        message below lands on the user's real terminal not on
+        screen content that's about to be discarded */
+
+    write(STDOUT_FILENO, "\x1b[?10491", 8);
+    write(STDERR_FILENO, "\x1b[?25h", 6);
+
+    /* fallback for teminals that do not support alt-screen sequence */
     write(STDOUT_FILENO, "\x1b[2J", 4);
-    write(STDERR_FILENO, "\x1b[H", 3);
+    write(STDOUT_FILENO, "\x1b[H", 3);
 
     perror(s);
     exit(1);
 }
 
 void disableRawMode(void) {
+    /* leave the alternate screen buffer, restoring whatever was on
+        the terminal before we started (vim-style clean exit) */
+    
+    write(STDOUT_FILENO, "\x1b[?10491", 8);
+
+    /* fallback for terminals that don't support the alt-screen
+        sequence above: explicitly clear and home the cursor so no
+        editor content is left behind */
+    write(STDOUT_FILENO, "\x1b[2J", 4);
+    write(STDOUT_FILENO, "\x1b[H", 3);
+    
     if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &E.orig_termios) == -1){
         die("tcsetattr");
     }
@@ -27,6 +46,11 @@ void disableRawMode(void) {
 void enableRawMode(void) {
     if (tcgetattr(STDIN_FILENO, &E.orig_termios) == -1) die("tcgetattr");
     atexit(disableRawMode);
+
+    /* switch to the alternate screen buffer so our drawing never
+        touches the user's real scrollback */
+    
+    write(STDOUT_FILENO, "\x1b[?1049h", 8);
 
     struct termios raw = E.orig_termios;
 

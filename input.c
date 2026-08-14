@@ -8,7 +8,7 @@
 
 #include <ctype.h>
 #include <stdlib.h>
-#include <unistd.h>
+// #include <unistd.h>
 
 /*** input ***/
 
@@ -109,8 +109,8 @@ void editorProcessKeypress(void) {
             quit_times--;
             return;
         }
-        write(STDOUT_FILENO, "\x1b[2J", 4);
-        write(STDERR_FILENO, "\x1b[H", 3);
+        // write(STDOUT_FILENO, "\x1b[2J", 4);
+        // write(STDERR_FILENO, "\x1b[H", 3);
         exit(0);
         break;
 
