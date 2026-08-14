@@ -3,5 +3,6 @@
 
 void editorFindCallback(char *query, int key);
 void editorFind(void);
+void editorFindAndReplace(void);
 
 #endif /* SWAN_FIND_H */

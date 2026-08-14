@@ -4,7 +4,6 @@
 #include "input.h"
 #include "file_io.h"
 
-/* the one true definition of the global editor state */
 struct editorConfig E;
 
 /*** init ***/
@@ -35,7 +34,7 @@ int main(int argc, char *argv[]) {
         editorOpen(argv[1]);
     }
 
-    editorSetStatusMessage("HELP: Ctrl-S = save | Ctrl-Q = quit | Ctrl-F = find");
+    editorSetStatusMessage("HELP: Ctrl-S = save | Ctrl-Q = quit | Ctrl-F = find | Ctrl-R = replace");
 
     while (1) {
 	    editorRefreshScreen();
