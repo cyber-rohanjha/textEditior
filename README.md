@@ -144,6 +144,14 @@ Planned next:
 - [ ] Config file for tab width, colors, etc.
 - [ ] Line numbers in the gutter
 
+## License
+
+This project is licensed under the BSD 2-Clause License - see [`LICENSE`](LICENSE) for full terms.
+
+```
+Portions Copyright (c) 2016, Salvatore Sanfilippo <antirez@gmail.com>
+Protions Copyright (c) 2026, Rohan Jha <https://github.com/cyber-rohanjha>
+
 ## Acknowledgments
 
 - [antirez](https://github.com/antirez) for the original [kilo](https://github.com/antirez/kilo) editor
