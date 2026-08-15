@@ -4,6 +4,7 @@
 #include "syntax.h"
 
 #include <ctype.h>
+#include <errno.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
@@ -146,7 +147,16 @@ void editorRefreshScreen(void) {
 
     abAppend(&ab, "\x1b[?25h", 6);
 
-    write(STDOUT_FILENO, ab.b, ab.len);
+    ssize_t total_written = 0;
+    while (total_written < ab.len) {
+        ssize_t n = write(STDOUT_FILENO, ab.b + total_written, ab.len - total_written);
+        if (n == -1) {
+            if (errno == EINTR) continue;
+            break;
+        }
+        total_written += n;
+    }
+
     abFree(&ab);
 }
 

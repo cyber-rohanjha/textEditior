@@ -23,7 +23,7 @@ void installResizeHandler(void) {
     memset(&sa, 0, sizeof(sa));
     sa.sa_handler = handleSigWinch;
     sigemptyset(&sa.sa_mask);
-    sa.sa_flags = 0;
+    sa.sa_flags = SA_RESTART;
     sigaction(SIGWINCH, &sa, NULL);
 }
 
