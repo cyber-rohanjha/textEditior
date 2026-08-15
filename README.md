@@ -151,6 +151,7 @@ This project is licensed under the BSD 2-Clause License - see [`LICENSE`](LICENS
 ```
 Portions Copyright (c) 2016, Salvatore Sanfilippo <antirez@gmail.com>
 Protions Copyright (c) 2026, Rohan Jha <https://github.com/cyber-rohanjha>
+```
 
 ## Acknowledgments
 
